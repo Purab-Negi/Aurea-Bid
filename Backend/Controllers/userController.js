@@ -122,7 +122,18 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
       httpOnly: true,
     })
     .json({
-      success: true.valueOf,
+      success: true,
       message: "Logout Successful",
     });
+});
+
+export const fetchLeaderboard = catchAsyncErrors(async (req, res) => {
+  const users = await User.find({ moneySpent: { $gt: 0 } });
+  const leaderBoard = users
+    .sort((a, b) => b.moneySpent - a.moneySpent)
+    .select("userName profileImage.url moneySpent");
+  res.status(200).json({
+    success: true,
+    leaderBoard,
+  });
 });

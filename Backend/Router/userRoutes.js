@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  fetchLeaderboard,
   getProfile,
   login,
   logout,
@@ -13,4 +14,5 @@ userRouter.post("/register", register);
 userRouter.post("/login", login);
 userRouter.get("/me", isAuthenticated, getProfile);
 userRouter.get("/logout", isAuthenticated, logout);
+userRouter.get("/leaderboard", fetchLeaderboard);
 export default userRouter;
