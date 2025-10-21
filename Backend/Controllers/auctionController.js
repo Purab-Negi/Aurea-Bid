@@ -97,3 +97,11 @@ export const addNewAuctionItem = catchAsyncErrors(async (req, res, next) => {
     );
   }
 });
+
+export const getAllItems = catchAsyncErrors(async (req, res, next) => {
+  const items = await Auction.find();
+  res.status(200).json({
+    success: true,
+    items,
+  });
+});
