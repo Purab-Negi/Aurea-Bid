@@ -1,6 +1,7 @@
 import {
   addNewAuctionItem,
   getAllItems,
+  getAuctionDetails,
 } from "../Controllers/auctionController.js";
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
@@ -12,5 +13,6 @@ auctionRouter.post(
   addNewAuctionItem
 );
 auctionRouter.get("/all-items", getAllItems);
+auctionRouter.get("/auction/:id", isAuthenticated, getAuctionDetails);
 
 export default auctionRouter;
