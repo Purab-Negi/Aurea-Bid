@@ -8,10 +8,12 @@ import {
 } from "../Controllers/auctionController.js";
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
+import { trackCommissionStatus } from "../middlewares/trackCommissionStatus.js";
 const auctionRouter = express.Router();
 auctionRouter.post(
   "/add-item",
   isAuthenticated,
+  trackCommissionStatus,
   isAuthorized("Auctioneer"),
   addNewAuctionItem
 );
