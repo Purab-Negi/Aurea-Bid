@@ -3,6 +3,7 @@ import {
   getAllItems,
   getAuctionDetails,
   getMyAuctionDetails,
+  removeFromAuction,
 } from "../Controllers/auctionController.js";
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
@@ -21,5 +22,10 @@ auctionRouter.get(
   isAuthorized("Auctioneer"),
   getMyAuctionDetails
 );
-
+auctionRouter.delete(
+  "/delete/:id",
+  isAuthenticated,
+  isAuthorized("Auctioneer"),
+  removeFromAuction
+);
 export default auctionRouter;

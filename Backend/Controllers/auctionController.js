@@ -128,3 +128,21 @@ export const getMyAuctionDetails = catchAsyncErrors(async (req, res, next) => {
     items,
   });
 });
+
+export const removeFromAuction = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Invalid Id format", 400));
+  }
+  const auctionItem = await Auction.findById(id);
+  if (!auctionItem) {
+    return next(new ErrorHandler("Auction not found", 400));
+  }
+  if (auctionItem.createdBy.toString() !== req.user._id.toString()) {
+    return next(new ErrorHandler("You can only delete your own auctions", 403));
+  }
+  await auctionItem.deleteOne();
+  res
+    .status(200)
+    .json({ success: true, message: "Auction Item deleted successfully" });
+});
