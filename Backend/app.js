@@ -7,6 +7,7 @@ import { connection } from "./Database/connection.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import userRouter from "./Router/userRoutes.js";
 import auctionRouter from "./Router/auctionRoutes.js";
+import bidRouter from "./Router/bidRoutes.js";
 const app = express();
 config({ path: "./Config/config.env" });
 app.use(
@@ -26,6 +27,7 @@ app.use(
 );
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/auction", auctionRouter);
+app.use("/api/v1/bid", bidRouter);
 connection();
 app.use(errorMiddleware);
 export default app;
