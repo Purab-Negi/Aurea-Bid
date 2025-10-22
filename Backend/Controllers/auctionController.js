@@ -119,3 +119,12 @@ export const getAuctionDetails = catchAsyncErrors(async (req, res, next) => {
   const bidders = item.bids.sort((a, b) => b.bid - a.bid);
   res.status(200).json({ success: true, item, bidders });
 });
+
+export const getMyAuctionDetails = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.user._id;
+  const items = await Auction.find({ createdBy: userId });
+  res.status(200).json({
+    success: true,
+    items,
+  });
+});
