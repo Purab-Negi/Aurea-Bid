@@ -4,6 +4,7 @@ import {
   getAuctionDetails,
   getMyAuctionDetails,
   removeFromAuction,
+  republishItem,
 } from "../Controllers/auctionController.js";
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
@@ -27,5 +28,11 @@ auctionRouter.delete(
   isAuthenticated,
   isAuthorized("Auctioneer"),
   removeFromAuction
+);
+auctionRouter.put(
+  "/item/republish/:id",
+  isAuthenticated,
+  isAuthorized("Auctioneer"),
+  republishItem
 );
 export default auctionRouter;
