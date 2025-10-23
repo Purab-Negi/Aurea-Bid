@@ -23,3 +23,18 @@ export const getAllPaymentProofs = catchAsyncErrors(async (req, res, next) => {
   let paymentProofs = await PaymentProof.find().sort({ uploadedAt: -1 });
   res.status(200).json({ success: true, paymentProofs });
 });
+
+export const getPaymentProofDetail = catchAsyncErrors(
+  async (req, res, next) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(new ErrorHandler("Invalid ID format", 400));
+    }
+
+    const paymentProofDetail = await PaymentProof.findById(id);
+    if (!paymentProofDetail) {
+      return next(new ErrorHandler("Payment Proof not found", 404));
+    }
+    res.status(200).json({ success: true, paymentProofDetail });
+  }
+);
