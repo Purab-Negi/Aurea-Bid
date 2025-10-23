@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteAuctionItem,
   deletePaymentProof,
+  fetchAllUsers,
   getAllPaymentProofs,
   getPaymentProofDetail,
   updateProofStatus,
@@ -40,5 +41,11 @@ superAdminRouter.delete(
   isAuthenticated,
   isAuthorized("Super Admin"),
   deletePaymentProof
+);
+superAdminRouter.get(
+  "/users/getall",
+  isAuthenticated,
+  isAuthorized("Super Admin"),
+  fetchAllUsers
 );
 export default superAdminRouter;
