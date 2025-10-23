@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import { Auction } from "../Models/auctionSchema.js";
+import { PaymentProof } from "../Models/commissionProofSchema.js";
 
 export const deleteAuctionItem = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
@@ -16,4 +17,9 @@ export const deleteAuctionItem = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "Auction Item deleted successfully" });
+});
+
+export const getAllPaymentProofs = catchAsyncErrors(async (req, res, next) => {
+  let paymentProofs = await PaymentProof.find().sort({ uploadedAt: -1 });
+  res.status(200).json({ success: true, paymentProofs });
 });
