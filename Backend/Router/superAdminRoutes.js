@@ -3,6 +3,7 @@ import {
   deleteAuctionItem,
   getAllPaymentProofs,
   getPaymentProofDetail,
+  updateProofStatus,
 } from "../Controllers/superAdminController.js";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
 const superAdminRouter = express.Router();
@@ -25,6 +26,12 @@ superAdminRouter.get(
   isAuthenticated,
   isAuthorized("Super Admin"),
   getPaymentProofDetail
+);
+superAdminRouter.put(
+  "/paymentproof/status/update/:id",
+  isAuthenticated,
+  isAuthorized("Super Admin"),
+  updateProofStatus
 );
 
 export default superAdminRouter;

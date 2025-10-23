@@ -38,3 +38,28 @@ export const getPaymentProofDetail = catchAsyncErrors(
     res.status(200).json({ success: true, paymentProofDetail });
   }
 );
+
+export const updateProofStatus = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+  const { amount, status } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Invalid ID format", 400));
+  }
+  if (!amount || !status) {
+    return next(new ErrorHandler("Amount or status is missing", 400));
+  }
+  let proof = await PaymentProof.findById(id);
+  if (!proof) {
+    return next(new ErrorHandler("Payment Proof not found", 404));
+  }
+  proof = await PaymentProof.findByIdAndUpdate(
+    id,
+    { status, amount },
+    { new: true, runValidators: true, useFindAndModify: false }
+  );
+  res.status(200).json({
+    success: true,
+    message: "Payment Proof amount and status updated",
+    proof,
+  });
+});
