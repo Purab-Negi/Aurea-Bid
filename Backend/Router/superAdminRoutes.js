@@ -5,6 +5,7 @@ import {
   fetchAllUsers,
   getAllPaymentProofs,
   getPaymentProofDetail,
+  monthlyRevenue,
   updateProofStatus,
 } from "../Controllers/superAdminController.js";
 import { isAuthenticated, isAuthorized } from "../middlewares/auth.js";
@@ -47,5 +48,12 @@ superAdminRouter.get(
   isAuthenticated,
   isAuthorized("Super Admin"),
   fetchAllUsers
+);
+
+superAdminRouter.get(
+  "/monthlyincome",
+  isAuthenticated,
+  isAuthorized("Super Admin"),
+  monthlyRevenue
 );
 export default superAdminRouter;
