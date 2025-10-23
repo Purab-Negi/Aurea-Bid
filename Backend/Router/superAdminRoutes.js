@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteAuctionItem,
+  deletePaymentProof,
   getAllPaymentProofs,
   getPaymentProofDetail,
   updateProofStatus,
@@ -34,4 +35,10 @@ superAdminRouter.put(
   updateProofStatus
 );
 
+superAdminRouter.delete(
+  "/paymentproof/delete/:id",
+  isAuthenticated,
+  isAuthorized("Super Admin"),
+  deletePaymentProof
+);
 export default superAdminRouter;
