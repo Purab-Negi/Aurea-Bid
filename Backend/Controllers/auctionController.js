@@ -4,6 +4,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/error.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import { Bid } from "../Models/bidSchema.js";
 
 export const addNewAuctionItem = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -190,13 +191,21 @@ export const republishItem = catchAsyncErrors(async (req, res, next) => {
       )
     );
   }
+  if (auctionItem.highestBidder) {
+    const highestBidder = await User.findById(auctionItem.highestBidder);
+    highestBidder.moneySpent -= auctionItem.currentBid;
+    highestBidder.auctionsWon -= 1;
+    highestBidder.save();
+  }
   data.bids = [];
+  data.highestBidder = null;
   data.commissionCalculated = false;
   auctionItem = await Auction.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
   });
+  await Bid.deleteMany({ auctionItem: auctionItem._id });
   const createdBy = await User.findByIdAndUpdate(
     req.user._id,
     {
