@@ -1,7 +1,16 @@
 import React from "react";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import { ToastContainer } from "react-toastify";
 const App = () => {
-  return <div className="text-center bg-red-500">App</div>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+      <ToastContainer position="top-right" />
+    </Router>
+  );
 };
 
 export default App;
