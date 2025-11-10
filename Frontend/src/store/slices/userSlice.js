@@ -48,6 +48,21 @@ export const userSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
     },
+    fetchUserRequest(state) {
+      state.loading = true;
+      state.isAuthenticated = false;
+      state.user = {};
+    },
+    fetchUserSuccess(state, action) {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload;
+    },
+    fetchUserFailed(state) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+    },
   },
 });
 
@@ -105,6 +120,21 @@ export const logout = () => async (dispatch) => {
   } catch (err) {
     dispatch(userSlice.actions.logoutFailed());
     toast.error(err.response?.data?.message || "Logout Failed");
+  } finally {
+    dispatch(userSlice.actions.clearAllErrors());
+  }
+};
+
+export const fetchUser = () => async (dispatch) => {
+  dispatch(userSlice.actions.fetchUserRequest());
+  try {
+    const response = await axios.get("http://localhost:5000/api/v1/user/me", {
+      withCredentials: true,
+    });
+    dispatch(userSlice.actions.fetchUserSuccess(response.data.user));
+  } catch (err) {
+    dispatch(userSlice.actions.fetchUserFailed());
+    toast.error(err.response?.data?.message);
   } finally {
     dispatch(userSlice.actions.clearAllErrors());
   }
