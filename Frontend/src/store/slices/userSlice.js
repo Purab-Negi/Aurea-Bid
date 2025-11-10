@@ -35,6 +35,19 @@ export const userSlice = createSlice({
     clearAllErrors(state) {
       state.loading = false;
     },
+    loginRequest(state) {
+      state.loading = true;
+    },
+    loginSuccess(state, action) {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+    },
+    loginFailed(state) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+    },
   },
 });
 
@@ -54,6 +67,27 @@ export const registerRequest = (formData) => async (dispatch) => {
   } catch (err) {
     dispatch(userSlice.actions.registerFailed());
     toast.error(err.response?.data?.message || "Registration Failed");
+  } finally {
+    dispatch(userSlice.actions.clearAllErrors());
+  }
+};
+
+export const loginRequest = (formData) => async (dispatch) => {
+  dispatch(userSlice.actions.loginRequest());
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/user/login",
+      formData,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    dispatch(userSlice.actions.loginSuccess(response.data));
+    toast.success(response.data.message);
+  } catch (err) {
+    dispatch(userSlice.actions.loginFailed());
+    toast.error(err.response?.data?.message || "Login Failed");
   } finally {
     dispatch(userSlice.actions.clearAllErrors());
   }

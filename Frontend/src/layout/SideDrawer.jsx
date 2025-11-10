@@ -125,7 +125,7 @@ const SideDrawer = () => {
             ) : (
               <button
                 onClick={handleLogout}
-                className="bg-[#F4B400] text-black px-4 py-2 rounded-md hover:bg-black hover:text-white transition"
+                className="bg-[#F4B400] text-black px-4 py-2 rounded-md cursor-pointer hover:bg-black hover:text-white transition"
               >
                 Logout
               </button>

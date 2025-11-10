@@ -59,7 +59,8 @@ const Signup = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-[#0E0E0E] px-4 py-12">
-      <div className="w-full max-w-3xl bg-[#1A1A1A] shadow-xl rounded-2xl px-6 py-10 border border-[#F4B400]/20 text-white">
+      <div className="w-full max-w-md bg-[#1A1A1A]/90 shadow-lg backdrop-blur-md rounded-2xl px-4 py-10 border border-[#F4B400]/30 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#F4B400]/10 via-transparent to-[#d6482b]/10 rounded-2xl pointer-events-none"></div>
         {/* Title */}
         <h1 className="text-center text-4xl md:text-5xl font-bold mb-8">
           Register for{" "}
