@@ -45,3 +45,30 @@ export const steps = [
       "If a Bidder fails to complete the payment, the Auctioneer can relist the same item without any additional charges.",
   },
 ];
+
+export const values = [
+  {
+    id: 1,
+    title: "Integrity",
+    description:
+      "We prioritize honesty and transparency in all our dealings, ensuring a fair and ethical auction experience for everyone.",
+  },
+  {
+    id: 2,
+    title: "Innovation",
+    description:
+      "We continually enhance our platform with cutting-edge technology and features to provide users with a seamless and efficient auction process.",
+  },
+  {
+    id: 3,
+    title: "Community",
+    description:
+      "We foster a vibrant community of buyers and sellers who share a passion for finding and offering exceptional items.",
+  },
+  {
+    id: 4,
+    title: "Customer Focus",
+    description:
+      "We are committed to providing exceptional customer support and resources to help users navigate the auction process with ease.",
+  },
+];
