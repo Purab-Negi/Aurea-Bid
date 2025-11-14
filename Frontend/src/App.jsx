@@ -6,14 +6,19 @@ import SideDrawer from "./layout/SideDrawer";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SubmitCommission from "./pages/SubmitCommission";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./store/slices/userSlice";
 import HowItWorks from "./pages/HowItWorks";
 import AboutUs from "./pages/AboutUs";
+import { getAllAuctionItems } from "./store/slices/auctionSlice";
 const App = () => {
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.user);
   useEffect(() => {
-    dispatch(fetchUser());
+    if (isAuthenticated) {
+      dispatch(fetchUser());
+    }
+    dispatch(getAllAuctionItems());
   }, [dispatch]);
   return (
     <Router>
