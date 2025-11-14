@@ -128,12 +128,11 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const fetchLeaderboard = catchAsyncErrors(async (req, res) => {
-  const users = await User.find({ moneySpent: { $gt: 0 } });
-  const leaderBoard = users
-    .sort((a, b) => b.moneySpent - a.moneySpent)
-    .select("userName profileImage.url moneySpent");
+  const users = await User.find({ moneySpent: { $gt: 0 } })
+    .select("userName profileImage moneySpent")
+    .sort({ moneySpent: -1 });
   res.status(200).json({
     success: true,
-    leaderBoard,
+    users,
   });
 });
