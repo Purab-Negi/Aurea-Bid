@@ -3,6 +3,7 @@ import { homePageConstant } from "@/constants/constant";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import FeatureAuction from "@/Components/home-sub-components/FeatureAuction";
+import UpcomingAuctions from "@/Components/home-sub-components/UpcomingAuctions";
 
 const Home = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -60,6 +61,7 @@ const Home = () => {
         </div>
       </div>
       <FeatureAuction />
+      <UpcomingAuctions />
     </section>
   );
 };

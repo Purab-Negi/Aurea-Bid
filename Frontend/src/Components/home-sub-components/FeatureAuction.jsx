@@ -19,7 +19,7 @@ const FeatureAuction = () => {
                 startingBid={element.startingBid}
                 startTime={element.startTime}
                 endTime={element.endTime}
-                id={element.id}
+                id={element._id}
                 key={element._id}
               />
             );
