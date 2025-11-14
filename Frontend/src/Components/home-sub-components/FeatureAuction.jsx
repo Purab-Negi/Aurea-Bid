@@ -6,8 +6,8 @@ const FeatureAuction = () => {
   const { allAuctions } = useSelector((state) => state.auction);
   return (
     <>
-      <section className="my-8">
-        <h3 className="text-center text-4xl font-bold text-white mb-12">
+      <section className="w-full mt-14 max-w-6xl text-center transition-all duration-300">
+        <h3 className="text-center text-4xl font-bold text-[#F4B400] mb-12">
           Featured Auction
         </h3>
         <div className="flex flex-wrap gap-6">

@@ -4,12 +4,22 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import FeatureAuction from "@/Components/home-sub-components/FeatureAuction";
 import UpcomingAuctions from "@/Components/home-sub-components/UpcomingAuctions";
+import Leaderboard from "@/Components/home-sub-components/Leaderboard";
 
 const Home = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
 
   return (
-    <section className="bg-[#0E0E0E] text-white min-h-screen flex flex-col items-center justify-center px-6 lg:ml-[278px] transition-all duration-300">
+    <section
+      className="bg-[#0E0E0E] 
+  text-white 
+  min-h-screen 
+  flex flex-col 
+  items-center 
+  px-6 
+  lg:ml-[278px]
+  transition-all duration-300"
+    >
       <div className="text-center max-w-3xl mx-auto mb-16">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4">
           <span className="text-[#F4B400]">Transparent</span> Auctions,
@@ -62,6 +72,7 @@ const Home = () => {
       </div>
       <FeatureAuction />
       <UpcomingAuctions />
+      <Leaderboard />
     </section>
   );
 };

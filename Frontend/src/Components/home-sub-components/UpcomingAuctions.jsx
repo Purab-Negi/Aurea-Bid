@@ -1,7 +1,6 @@
 import React from "react";
 import { RiAuctionFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Card from "../Card";
 
 const UpcomingAuctions = () => {
@@ -15,8 +14,8 @@ const UpcomingAuctions = () => {
   });
 
   return (
-    <section className="mt-14 px-4 lg:ml-[278px] transition-all duration-300">
-      <h3 className="text-center text-4xl font-bold text-[#F4B400] mb-12 drop-shadow-[0_0_15px_rgba(244,180,0,0.3)]">
+    <section className="w-full mt-14 max-w-6xl text-center transition-all duration-300">
+      <h3 className="text-center text-4xl font-bold text-[#F4B400] mb-12">
         Featured Auctions Today
       </h3>
 
@@ -35,29 +34,23 @@ const UpcomingAuctions = () => {
           </p>
         </div>
 
-        <div className="lg:col-span-2 grid gap-6">
+        <div className="lg:col-span-2 grid grid-cols-1 gap-6">
           {auctionsStartingToday.length === 0 && (
-            <p className="text-gray-400 text-lg text-center">
+            <p className="lg:col-span-2 grid grid-cols-1 gap-6">
               No auctions starting today.
             </p>
           )}
 
           {auctionsStartingToday.slice(0, 3).map((element) => (
-            <Link
+            <Card
+              imageSrc={element.image?.url}
+              title={element.title}
+              startingBid={element.startingBid}
+              startTime={element.startTime}
+              endTime={element.endTime}
+              id={element._id}
               key={element._id}
-              to={`/auction/item/${element._id}`}
-              className="bg-[#1A1A1A] border border-[#F4B400]/20 hover:border-[#F4B400]/60 p-4 rounded-xl flex items-center gap-4 shadow-md hover:shadow-[#F4B400]/30 transition-all"
-            >
-              <Card
-                imageSrc={element.image?.url}
-                title={element.title}
-                startingBid={element.startingBid}
-                startTime={element.startTime}
-                endTime={element.endTime}
-                id={element._id}
-                key={element._id}
-              />
-            </Link>
+            />
           ))}
         </div>
       </div>

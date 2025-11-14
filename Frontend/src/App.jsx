@@ -7,7 +7,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SubmitCommission from "./pages/SubmitCommission";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser } from "./store/slices/userSlice";
+import { fetchLeaderboard, fetchUser } from "./store/slices/userSlice";
 import HowItWorks from "./pages/HowItWorks";
 import AboutUs from "./pages/AboutUs";
 import { getAllAuctionItems } from "./store/slices/auctionSlice";
@@ -19,7 +19,8 @@ const App = () => {
       dispatch(fetchUser());
     }
     dispatch(getAllAuctionItems());
-  }, [dispatch]);
+    dispatch(fetchLeaderboard());
+  }, []);
   return (
     <Router>
       <SideDrawer />

@@ -64,7 +64,7 @@ const Card = ({ imageSrc, title, startingBid, startTime, endTime, id }) => {
           src={imageSrc}
           alt={title}
           className="
-            w-full h-full object-cover 
+            w-full h-full object-fit 
             group-hover:scale-105 
             transition-all duration-500
           "
