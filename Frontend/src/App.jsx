@@ -12,6 +12,7 @@ import HowItWorks from "./pages/HowItWorks";
 import AboutUs from "./pages/AboutUs";
 import { getAllAuctionItems } from "./store/slices/auctionSlice";
 import Leaderboard from "./pages/Leaderboard";
+import Auctions from "./pages/Auctions";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/how-it-works-info" element={<HowItWorks />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/auctions" element={<Auctions />} />
       </Routes>
       <ToastContainer position="top-right" />
     </Router>
