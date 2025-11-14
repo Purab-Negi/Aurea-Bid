@@ -38,7 +38,7 @@ const Leaderboard = () => {
           </thead>
 
           <tbody>
-            {leaderboard.slice(0, 10).map((element, index) => {
+            {leaderboard.slice(0, 5).map((element, index) => {
               const isTop3 = index < 3;
 
               return (

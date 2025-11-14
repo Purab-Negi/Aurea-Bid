@@ -11,6 +11,7 @@ import { fetchLeaderboard, fetchUser } from "./store/slices/userSlice";
 import HowItWorks from "./pages/HowItWorks";
 import AboutUs from "./pages/AboutUs";
 import { getAllAuctionItems } from "./store/slices/auctionSlice";
+import Leaderboard from "./pages/Leaderboard";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/submit-commission" element={<SubmitCommission />} />
         <Route path="/how-it-works-info" element={<HowItWorks />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
       <ToastContainer position="top-right" />
     </Router>
