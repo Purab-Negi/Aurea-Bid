@@ -84,3 +84,13 @@ export const homePageConstant = [
     description: "Bidder pays; auctioneer pays 5% fee.",
   },
 ];
+
+export function getAuctionStatus(startTime, endTime) {
+  const start = new Date(startTime).getTime();
+  const end = new Date(endTime).getTime();
+  const now = Date.now();
+
+  if (now < start) return "not-started";
+  if (now > end) return "ended";
+  return "live";
+}

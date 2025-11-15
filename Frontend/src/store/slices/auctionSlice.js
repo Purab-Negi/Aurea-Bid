@@ -1,3 +1,4 @@
+import AuctionItem from "@/pages/AuctionItem";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -24,6 +25,20 @@ export const auctionSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    getAuctionDetailRequest(state) {
+      state.loading = true;
+    },
+    getAuctionDetailSuccess(state, action) {
+      state.loading = false;
+      state.auctionDetail = action.payload.item;
+      state.auctionBidders = action.payload.bidders;
+    },
+    getAuctionDetailFailed(state, action) {
+      state.loading = false;
+      state.auctionDetail = {};
+      state.auctionBidders = [];
+      state.error = action.payload;
+    },
     clearErrors(state) {
       state.error = null;
     },
@@ -47,5 +62,29 @@ export const getAllAuctionItems = () => async (dispatch) => {
         err.response?.data?.message || "Failed to fetch auctions"
       )
     );
+  }
+};
+
+export const getAuctionDetails = (id) => async (dispatch) => {
+  dispatch(auctionSlice.actions.getAuctionDetailRequest());
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/v1/auction/${id}`,
+      { withCredentials: true }
+    );
+    dispatch(
+      auctionSlice.actions.getAuctionDetailSuccess({
+        item: response.data.item,
+        bidders: response.data.bidders,
+      })
+    );
+  } catch (err) {
+    dispatch(
+      auctionSlice.actions.getAuctionDetailFailed(
+        err.response?.data?.message || "Failed to fetch auction"
+      )
+    );
+  } finally {
+    dispatch(auctionSlice.actions.clearErrors());
   }
 };
