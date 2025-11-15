@@ -117,7 +117,7 @@ export const getAuctionDetails = catchAsyncErrors(async (req, res, next) => {
   if (!item) {
     return next(new ErrorHandler("Auction not found", 404));
   }
-  const bidders = item.bids.sort((a, b) => b.bid - a.bid);
+  const bidders = item.bids.sort((a, b) => b.amount - a.amount);
   res.status(200).json({ success: true, item, bidders });
 });
 

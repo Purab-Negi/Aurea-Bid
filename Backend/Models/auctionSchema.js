@@ -33,7 +33,7 @@ const auctionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Bid",
       },
-      username: String,
+      userName: String,
       profileImage: String,
       amount: Number,
     },

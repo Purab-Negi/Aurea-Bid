@@ -18,7 +18,7 @@ auctionRouter.post(
   addNewAuctionItem
 );
 auctionRouter.get("/all-items", getAllItems);
-auctionRouter.get("/auction/:id", isAuthenticated, getAuctionDetails);
+auctionRouter.get("/:id", isAuthenticated, getAuctionDetails);
 auctionRouter.get(
   "/myitems",
   isAuthenticated,
