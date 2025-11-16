@@ -18,7 +18,6 @@ auctionRouter.post(
   addNewAuctionItem
 );
 auctionRouter.get("/all-items", getAllItems);
-auctionRouter.get("/:id", isAuthenticated, getAuctionDetails);
 auctionRouter.get(
   "/myitems",
   isAuthenticated,
@@ -37,4 +36,5 @@ auctionRouter.put(
   isAuthorized("Auctioneer"),
   republishItem
 );
+auctionRouter.get("/:id", isAuthenticated, getAuctionDetails);
 export default auctionRouter;
