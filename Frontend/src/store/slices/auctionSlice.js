@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { DiamondPercent } from "lucide-react";
 import { data } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -60,6 +61,24 @@ export const auctionSlice = createSlice({
     getMyAuctionFailed(state) {
       state.loading = false;
       state.myAuction = [];
+    },
+    deleteAuctionItemRequest(state) {
+      state.loading = true;
+    },
+    deleteAuctionItemSuccess(state) {
+      state.loading = false;
+    },
+    deleteAuctionItemFailed(state) {
+      state.loading = false;
+    },
+    republishItemRequest(state) {
+      state.loading = true;
+    },
+    republishItemSuccess(state) {
+      state.loading = false;
+    },
+    republishItemFailed(state) {
+      state.loading = false;
     },
     clearErrors(state) {
       state.error = null;
@@ -124,6 +143,7 @@ export const createAuction = (data) => async (dispatch) => {
     );
     dispatch(auctionSlice.actions.createAuctionSuccess());
     toast.success(response.data.message);
+    dispatch(getAllAuctionItems());
   } catch (err) {
     dispatch(auctionSlice.actions.createAuctionFailed());
     toast.error(err.response.data.message);
@@ -143,6 +163,49 @@ export const getMyAuction = () => async (dispatch) => {
   } catch (err) {
     dispatch(auctionSlice.actions.getMyAuctionFailed());
     toast.error(err.message);
+  } finally {
+    dispatch(auctionSlice.actions.clearErrors());
+  }
+};
+
+export const deleteAuction = (id) => async (dispatch) => {
+  dispatch(auctionSlice.actions.deleteAuctionItemRequest());
+  try {
+    const response = await axios.delete(
+      `http://localhost:5000/api/v1/auction/delete/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(auctionSlice.actions.deleteAuctionItemSuccess(response.data));
+    toast.success(response.data.message);
+    dispatch(getMyAuction());
+  } catch (err) {
+    dispatch(auctionSlice.actions.deleteAuctionItemFailed());
+    toast.error(err.message);
+  } finally {
+    dispatch(auctionSlice.actions.clearErrors());
+  }
+};
+
+export const republishAuction = (id, data) => async (dispatch) => {
+  dispatch(auctionSlice.actions.republishItemRequest());
+  try {
+    const response = await axios.put(
+      `http://localhost:5000/api/v1/auction/item/republish/${id}`,
+      data,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    dispatch(auctionSlice.actions.republishItemSuccess());
+    toast.success(response.data.message);
+  } catch (err) {
+    dispatch(auctionSlice.actions.republishItemFailed());
+    toast.error(err.message);
+    dispatch(getMyAuction());
+    dispatch(getAllAuctionItems());
   } finally {
     dispatch(auctionSlice.actions.clearErrors());
   }

@@ -29,18 +29,40 @@ const ViewMyAuctions = () => {
             <Spinner />
           ) : (
             <div className="flex flex-wrap gap-10">
-              {myAuction.map((element) => {
-                return (
-                  <CardTwo
-                    imageSrc={element.image?.url}
-                    title={element.title}
-                    startingBid={element.startingBid}
-                    startTime={element.startTime}
-                    endTime={element.endTime}
-                    id={element._id}
-                  />
-                );
-              })}
+              {myAuction.length > 0 ? (
+                myAuction.map((element) => {
+                  return (
+                    <CardTwo
+                      key={element._id}
+                      imageSrc={element.image?.url}
+                      title={element.title}
+                      startingBid={element.startingBid}
+                      startTime={element.startTime}
+                      endTime={element.endTime}
+                      id={element._id}
+                    />
+                  );
+                })
+              ) : (
+                <h1
+                  className="
+                      text-2xl
+                      sm:text-3xl
+                      font-bold
+                      text-gray-400
+                      tracking-wide
+                      my-4
+                      mx-[25%]
+                      px-8
+                      py-6
+                      rounded-xl
+                      transition-all
+                      duration-300
+                    "
+                >
+                  You have not posted any Auction
+                </h1>
+              )}
             </div>
           )}
         </div>
