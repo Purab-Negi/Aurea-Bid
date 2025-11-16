@@ -16,6 +16,7 @@ import Auctions from "./pages/Auctions";
 import AuctionItem from "./pages/AuctionItem";
 import CreateAuction from "./pages/CreateAuction";
 import ViewMyAuctions from "./pages/ViewMyAuctions";
+import ViewAuctionDetail from "./pages/ViewAuctionDetail";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/auction/item/:id" element={<AuctionItem />} />
         <Route path="/create-auction" element={<CreateAuction />} />
         <Route path="/view-my-auction" element={<ViewMyAuctions />} />
+        <Route path="/auction/details/:id" element={<ViewAuctionDetail />} />
       </Routes>
       <ToastContainer position="top-right" />
     </Router>

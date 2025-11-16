@@ -23,7 +23,7 @@ const ViewMyAuctions = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#F4B400]">
-            Create New Auction
+            My Auctions
           </h1>
           {loading ? (
             <Spinner />
@@ -37,7 +37,7 @@ const ViewMyAuctions = () => {
                     startingBid={element.startingBid}
                     startTime={element.startTime}
                     endTime={element.endTime}
-                    id={element.id}
+                    id={element._id}
                   />
                 );
               })}
