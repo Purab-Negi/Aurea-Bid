@@ -19,7 +19,7 @@ const CreateAuction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auction);
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const auctionCategories = [
     "Electronics",
@@ -60,7 +60,7 @@ const CreateAuction = () => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/");
+    if (!isAuthenticated || user.role !== "Auctioneer") navigate("/");
   }, [isAuthenticated]);
 
   return (

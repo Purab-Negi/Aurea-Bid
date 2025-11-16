@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { data } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const auctionSlice = createSlice({
@@ -47,6 +48,18 @@ export const auctionSlice = createSlice({
     },
     createAuctionFailed(state) {
       state.loading = false;
+    },
+    getMyAuctionRequest(state) {
+      state.loading = true;
+      state.myAuction = [];
+    },
+    getMyAuctionSuccess(state, action) {
+      state.loading = false;
+      state.myAuction = action.payload;
+    },
+    getMyAuctionFailed(state) {
+      state.loading = false;
+      state.myAuction = [];
     },
     clearErrors(state) {
       state.error = null;
@@ -114,6 +127,22 @@ export const createAuction = (data) => async (dispatch) => {
   } catch (err) {
     dispatch(auctionSlice.actions.createAuctionFailed());
     toast.error(err.response.data.message);
+  } finally {
+    dispatch(auctionSlice.actions.clearErrors());
+  }
+};
+
+export const getMyAuction = () => async (dispatch) => {
+  dispatch(auctionSlice.actions.getMyAuctionRequest());
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/api/v1/auction/myitems",
+      { withCredentials: true }
+    );
+    dispatch(auctionSlice.actions.getMyAuctionSuccess(response.data.items));
+  } catch (err) {
+    dispatch(auctionSlice.actions.getMyAuctionFailed());
+    toast.error(err.message);
   } finally {
     dispatch(auctionSlice.actions.clearErrors());
   }
