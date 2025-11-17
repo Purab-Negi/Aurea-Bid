@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { DiamondPercent } from "lucide-react";
-import { data } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const auctionSlice = createSlice({
