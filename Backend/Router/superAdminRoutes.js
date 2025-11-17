@@ -24,12 +24,6 @@ superAdminRouter.get(
   getAllPaymentProofs
 );
 
-superAdminRouter.get(
-  "paymentproof/:id",
-  isAuthenticated,
-  isAuthorized("Super Admin"),
-  getPaymentProofDetail
-);
 superAdminRouter.put(
   "/paymentproof/status/update/:id",
   isAuthenticated,
@@ -55,5 +49,12 @@ superAdminRouter.get(
   isAuthenticated,
   isAuthorized("Super Admin"),
   monthlyRevenue
+);
+
+superAdminRouter.get(
+  "/paymentproof/:id",
+  isAuthenticated,
+  isAuthorized("Super Admin"),
+  getPaymentProofDetail
 );
 export default superAdminRouter;
