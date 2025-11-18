@@ -2,50 +2,101 @@ import cron from "node-cron";
 import { Auction } from "../Models/auctionSchema.js";
 import { User } from "../Models/userSchema.js";
 import { Bid } from "../Models/bidSchema.js";
-import { calculateCommission } from "../Controllers/commissionController.js";
 import { sendEmail } from "../Utils/sendEmail.js";
+import { calculateCommission } from "../Controllers/commissionController.js";
+
 export const endedAuctionCron = () => {
-  cron.schedule("*/1 * * * *", async () => {
-    const now = Date.now();
-    const endedAuctions = await Auction.find({
-      endTime: { $lt: now },
-      commissionCalculated: false,
-    });
-    for (const auction of endedAuctions) {
-      try {
-        const commissionAmount = await calculateCommission(auction._id);
-        auction.commissionCalculated = true;
-        const highestBidder = await Bid.findOne({
-          auctionItem: auction._id,
-          amount: auction.currentBid,
-        });
-        const auctioneer = await User.findById(auction.createdBy);
-        auctioneer.unpaidCommission = commissionAmount;
-        if (highestBidder) {
-          auction.highestBidder = highestBidder.bidder.id;
+  cron.schedule("*/3 * * * *", async () => {
+    try {
+      const now = new Date();
+      console.log("[Cron] endedAuctionCron running at", now.toISOString());
+
+      const endedAuctions = await Auction.find({
+        endTime: { $lt: now },
+        commissionCalculated: false,
+      });
+
+      for (const auction of endedAuctions) {
+        try {
+          console.log("[Cron] Processing auction:", auction._id);
+          const highestBid = await Bid.findOne({
+            auctionItem: auction._id,
+          }).sort({ amount: -1 });
+
+          if (!highestBid) {
+            console.log("[Cron] No bids found for auction:", auction._id);
+            auction.commissionCalculated = true;
+            await auction.save();
+            continue;
+          }
+          auction.currentBid = highestBid.amount;
+          auction.highestBidder = highestBid.bidder.id;
+          auction.commissionCalculated = true;
           await auction.save();
-          const bidder = await User.findById(highestBidder.bidder.id);
-          await User.findByIdAndUpdate(
-            bidder._id,
-            {
-              $inc: { moneySpent: highestBidder.amount, auctionWon: 1 },
-            },
-            { new: true }
+
+          const commissionAmount = await calculateCommission(auction._id);
+
+          const auctioneer = await User.findById(auction.createdBy);
+          if (!auctioneer) {
+            console.warn(
+              "[Cron] Auctioneer not found for auction:",
+              auction._id
+            );
+          } else {
+            await User.findByIdAndUpdate(
+              auctioneer._id,
+              { $inc: { unpaidCommission: commissionAmount } },
+              { new: true }
+            );
+            console.log(
+              `[Cron] Commission added: ${commissionAmount} to ${auctioneer._id}`
+            );
+          }
+
+          const bidder = await User.findById(highestBid.bidder.id);
+          if (bidder) {
+            await User.findByIdAndUpdate(
+              bidder._id,
+              { $inc: { moneySpent: highestBid.amount, auctionsWon: 1 } },
+              { new: true }
+            );
+          } else {
+            console.warn(
+              "[Cron] Bidder user not found for bid:",
+              highestBid._id
+            );
+          }
+
+          try {
+            const subject = `Congratulations! You won the auction for ${auction.title}`;
+            const message = `Dear ${
+              bidder ? bidder.userName : "User"
+            },\n\nCongratulations! You have won the auction for ${
+              auction.title
+            }.\n\nAuctioneer email: ${
+              auctioneer ? auctioneer.email : "Not available"
+            }\nWinning amount: ₹${
+              highestBid.amount
+            }\n\nPlease contact the auctioneer for payment details.\n\nBest Regards,\nAureaBid Team`;
+            await sendEmail({ email: bidder.email, subject, message });
+            console.log("[Cron] Email sent to bidder:", bidder.email);
+          } catch (mailErr) {
+            console.error(
+              "[Cron] Failed to send email to bidder:",
+              bidder ? bidder.email : "unknown",
+              mailErr
+            );
+          }
+        } catch (innerErr) {
+          console.error(
+            "[Cron] Error processing single auction:",
+            auction._id,
+            innerErr
           );
-          await User.findByIdAndUpdate(
-            auctioneer._id,
-            {
-              $inc: { unpaidCommission: commissionAmount },
-            },
-            { new: true }
-          );
-          const subject = `Congratulations! You won the auction for ${auction.title}`;
-          const message = `Dear ${bidder.userName}, \n\nCongratulations! You have won the auction for ${auction.title}. \n\nBefore proceeding for payment contact your auctioneer via your auctioneer email:${auctioneer.email} \n\nPlease complete your payment using one of the following methods:\n\n1. **Bank Transfer**: \n- Account Name: ${auctioneer.paymentMethods.bankTransfer.bankAccountName} \n- Account Number: ${auctioneer.paymentMethods.bankTransfer.bankAccountNumber} \n- Bank: ${auctioneer.paymentMethods.bankTransfer.bankName}\n\n2. **UPI**:\n- You can send payment via UPI: ${auctioneer.paymentMethods.UPI.upiId}\n\n3. **PayPal**:\n- Send payment to: ${auctioneer.paymentMethods.paypal.paypalEmail}\n\n4. **Cash on Delivery (COD)**:\n- If you prefer COD, you must pay 20% of the total amount upfront before delivery.\n- To pay the 20% upfront, use any of the above methods.\n- The remaining 80% will be paid upon delivery.\n- If you want to see the condition of your auction item then send your email on this: ${auctioneer.email}\n\nPlease ensure your payment is completed by [Payment Due Date]. Once we confirm the payment, the item will be shipped to you.\n\nThank you for participating!\n\nBest regards,\nAurea Bid Auction Team`;
-          await sendEmail({ email: bidder.email, subject, message });
         }
-      } catch (err) {
-        console.error("Some Error in ended auction cron");
       }
+    } catch (err) {
+      console.error("[Cron] endedAuctionCron top-level error:", err);
     }
   });
 };

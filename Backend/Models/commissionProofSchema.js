@@ -25,4 +25,5 @@ const paymentProof = mongoose.Schema({
   comment: String,
 });
 
-export const PaymentProof = mongoose.model("PaymentProof", paymentProof);
+export const PaymentProof =
+  mongoose.models.PaymentProof || mongoose.model("PaymentProof", paymentProof);

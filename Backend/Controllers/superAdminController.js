@@ -54,7 +54,7 @@ export const updateProofStatus = catchAsyncErrors(async (req, res, next) => {
   proof = await PaymentProof.findByIdAndUpdate(
     id,
     { status, amount },
-    { new: true, runValidators: true, useFindAndModify: false }
+    { new: true, runValidators: true }
   );
   res.status(200).json({
     success: true,
