@@ -9,6 +9,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/slices/userSlice";
 import { Link } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
 
 const SideDrawer = () => {
   const [show, setShow] = useState(false);
@@ -61,6 +62,19 @@ const SideDrawer = () => {
                 <MdLeaderboard /> Leaderboard
               </Link>
             </li>
+            {isAuthenticated &&
+              (user?.role === "Bidder" || user?.role === "Auctioneer") && (
+                <>
+                  <li>
+                    <Link
+                      to={"/me"}
+                      className="flex items-center gap-3 hover:text-[#F4B400] transition-all"
+                    >
+                      <FaUserCircle /> Profile
+                    </Link>
+                  </li>
+                </>
+              )}
 
             {/* Auctioneer Routes */}
             {isAuthenticated && user?.role === "Auctioneer" && (
