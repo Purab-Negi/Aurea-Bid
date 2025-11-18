@@ -32,8 +32,8 @@ const superAdminSlice = createSlice({
     },
     allUsersSuccess(state, action) {
       state.loading = false;
-      state.totalAuctioneers = action.payload.auctioneersArray;
-      state.totalBidders = action.payload.biddersArray;
+      state.totalAuctioneers = action.payload.auctioneerArray;
+      state.totalBidders = action.payload.bidderArray;
     },
     allUsersFailed(state, action) {
       state.loading = false;
@@ -164,30 +164,33 @@ export const singlePaymentProofDetail = (id) => async (dispatch) => {
     dispatch(
       superAdminSlice.actions.singleProofSuccess(res.data.paymentProofDetail)
     );
+    return res.data.paymentProofDetail;
   } catch (err) {
     dispatch(superAdminSlice.actions.singleProofFailed(err.message));
     toast.error(err.message);
   }
 };
 
-export const updatePaymentProof = (id, status, amount) => async (dispatch) => {
-  dispatch(superAdminSlice.actions.request());
-  try {
-    const res = await axios.put(
-      `http://localhost:5000/api/v1/superadmin/paymentproof/status/update/${id}`,
-      { status, amount },
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    dispatch(superAdminSlice.actions.updateProofSuccess());
-    toast.success(res.data.message);
-  } catch (err) {
-    dispatch(superAdminSlice.actions.updateProofFailed(err.message));
-    toast.error(err.message);
-  }
-};
+export const updatePaymentProof =
+  ({ id, status, amount }) =>
+  async (dispatch) => {
+    dispatch(superAdminSlice.actions.request());
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/superadmin/paymentproof/status/update/${id}`,
+        { status, amount },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      dispatch(superAdminSlice.actions.updateProofSuccess());
+      toast.success(res.data.message);
+    } catch (err) {
+      dispatch(superAdminSlice.actions.updateProofFailed(err.message));
+      toast.error(err.message);
+    }
+  };
 
 export const deleteAuctionItem = (id) => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
