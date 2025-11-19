@@ -19,6 +19,7 @@ import ViewMyAuctions from "./pages/ViewMyAuctions";
 import ViewAuctionDetail from "./pages/ViewAuctionDetail";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import UserProfile from "./pages/UserProfile";
+import Contact from "./pages/Contact";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/auction/details/:id" element={<ViewAuctionDetail />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/me" element={<UserProfile />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <ToastContainer position="top-right" />
     </Router>

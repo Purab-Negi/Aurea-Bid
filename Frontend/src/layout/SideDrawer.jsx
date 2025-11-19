@@ -179,6 +179,12 @@ const SideDrawer = () => {
         <div>
           <div className="flex gap-3 justify-center mb-3">
             <Link
+              to="/contact"
+              className="bg-[#f6f4f0] text-[#0E0E0E] p-2 text-xl rounded-sm hover:bg-[#F4B400] hover:text-black transition"
+            >
+              Contact
+            </Link>
+            <Link
               to="https://www.instagram.com/"
               className="bg-[#f6f4f0] text-[#0E0E0E] p-2 text-xl rounded-sm hover:bg-[#F4B400] hover:text-black transition"
             >
