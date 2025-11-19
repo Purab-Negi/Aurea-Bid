@@ -20,6 +20,9 @@ import ViewAuctionDetail from "./pages/ViewAuctionDetail";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import UserProfile from "./pages/UserProfile";
 import Contact from "./pages/Contact";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -49,6 +52,9 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/me" element={<UserProfile />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
       <ToastContainer position="top-right" />
     </Router>

@@ -179,12 +179,6 @@ const SideDrawer = () => {
         <div>
           <div className="flex gap-3 justify-center mb-3">
             <Link
-              to="/contact"
-              className="bg-[#f6f4f0] text-[#0E0E0E] p-2 text-xl rounded-sm hover:bg-[#F4B400] hover:text-black transition"
-            >
-              Contact
-            </Link>
-            <Link
               to="https://www.instagram.com/"
               className="bg-[#f6f4f0] text-[#0E0E0E] p-2 text-xl rounded-sm hover:bg-[#F4B400] hover:text-black transition"
             >
@@ -197,6 +191,13 @@ const SideDrawer = () => {
               <FaFacebook />
             </Link>
           </div>
+          <Link
+            to="/contact"
+            className="block text-center text-sm font-medium text-gray-300 
+               hover:text-[#F4B400] transition"
+          >
+            Contact
+          </Link>
           <p className="text-sm text-gray-400 text-center">
             © {new Date().getFullYear()}{" "}
             <span className="text-[#F4B400] font-medium">AureaBid</span>. All
