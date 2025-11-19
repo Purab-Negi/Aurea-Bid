@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { createSlice } from "@reduxjs/toolkit";
 import { getAllAuctionItems } from "./auctionSlice";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const superAdminSlice = createSlice({
   name: "superAdmin",
@@ -95,10 +96,9 @@ const superAdminSlice = createSlice({
 export const getAllUsers = () => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/superadmin/users/getall",
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${BASE_URL}/superadmin/users/getall`, {
+      withCredentials: true,
+    });
     dispatch(superAdminSlice.actions.allUsersSuccess(res.data));
   } catch (err) {
     dispatch(superAdminSlice.actions.allUsersFailed(err.message));
@@ -109,10 +109,9 @@ export const getAllUsers = () => async (dispatch) => {
 export const getMonthlyRevenue = () => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/superadmin/monthlyincome",
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${BASE_URL}/superadmin/monthlyincome`, {
+      withCredentials: true,
+    });
     dispatch(
       superAdminSlice.actions.monthlyRevenueSuccess(res.data.totalMonthRevenue)
     );
@@ -125,10 +124,9 @@ export const getMonthlyRevenue = () => async (dispatch) => {
 export const getPaymentProof = () => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/v1/superadmin/paymentproofs/getall",
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${BASE_URL}/superadmin/paymentproofs/getall`, {
+      withCredentials: true,
+    });
     dispatch(
       superAdminSlice.actions.paymentProofSuccess(res.data.paymentProofs)
     );
@@ -142,7 +140,7 @@ export const deletePaymentProof = (id) => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
     const res = await axios.delete(
-      `http://localhost:5000/api/v1/superadmin/paymentproof/delete/${id}`,
+      `${BASE_URL}/superadmin/paymentproof/delete/${id}`,
       { withCredentials: true }
     );
     dispatch(superAdminSlice.actions.deletePaymentProofSuccess());
@@ -157,10 +155,9 @@ export const deletePaymentProof = (id) => async (dispatch) => {
 export const singlePaymentProofDetail = (id) => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
-    const res = await axios.get(
-      `http://localhost:5000/api/v1/superadmin/paymentproof/${id}`,
-      { withCredentials: true }
-    );
+    const res = await axios.get(`${BASE_URL}/superadmin/paymentproof/${id}`, {
+      withCredentials: true,
+    });
     dispatch(
       superAdminSlice.actions.singleProofSuccess(res.data.paymentProofDetail)
     );
@@ -177,7 +174,7 @@ export const updatePaymentProof =
     dispatch(superAdminSlice.actions.request());
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/v1/superadmin/paymentproof/status/update/${id}`,
+        `${BASE_URL}/superadmin/paymentproof/status/update/${id}`,
         { status, amount },
         {
           withCredentials: true,
@@ -196,7 +193,7 @@ export const deleteAuctionItem = (id) => async (dispatch) => {
   dispatch(superAdminSlice.actions.request());
   try {
     const res = await axios.delete(
-      `http://localhost:5000/api/v1/superadmin/auctionitem/delete/${id}`,
+      `${BASE_URL}/superadmin/auctionitem/delete/${id}`,
       { withCredentials: true }
     );
 

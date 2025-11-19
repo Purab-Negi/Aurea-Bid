@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const userSlice = createSlice({
   name: "user",
@@ -81,14 +82,10 @@ export const userSlice = createSlice({
 export const registerRequest = (formData) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
   try {
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/user/register",
-      formData,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/user/register`, formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     dispatch(userSlice.actions.registerSuccess(response.data));
     toast.success(response.data.message);
   } catch (err) {
@@ -102,14 +99,10 @@ export const registerRequest = (formData) => async (dispatch) => {
 export const loginRequest = (formData) => async (dispatch) => {
   dispatch(userSlice.actions.loginRequest());
   try {
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/user/login",
-      formData,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/user/login`, formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+    });
     dispatch(userSlice.actions.loginSuccess(response.data));
     toast.success(response.data.message);
   } catch (err) {
@@ -122,10 +115,9 @@ export const loginRequest = (formData) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/v1/user/logout",
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${BASE_URL}/user/logout`, {
+      withCredentials: true,
+    });
 
     dispatch(userSlice.actions.logoutSuccess());
     toast.success(response.data.message);
@@ -140,7 +132,7 @@ export const logout = () => async (dispatch) => {
 export const fetchUser = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchUserRequest());
   try {
-    const response = await axios.get("http://localhost:5000/api/v1/user/me", {
+    const response = await axios.get(`${BASE_URL}/user/me`, {
       withCredentials: true,
     });
     dispatch(userSlice.actions.fetchUserSuccess(response.data.user));
@@ -155,10 +147,9 @@ export const fetchUser = () => async (dispatch) => {
 export const fetchLeaderboard = () => async (dispatch) => {
   dispatch(userSlice.actions.fetchLeaderboardRequest());
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/v1/user/leaderboard",
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${BASE_URL}/user/leaderboard`, {
+      withCredentials: true,
+    });
     dispatch(userSlice.actions.fetchLeaderboardSuccess(response.data.users));
   } catch (err) {
     dispatch(userSlice.actions.fetchLeaderboardFailed());

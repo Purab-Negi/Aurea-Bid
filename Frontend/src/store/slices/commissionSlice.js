@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const commissionSlice = createSlice({
   name: "commission",
   initialState: {
@@ -22,14 +23,10 @@ export const commissionSlice = createSlice({
 export const commissionProof = (data) => async (dispatch) => {
   dispatch(commissionSlice.actions.postCommissionProofRequest());
   try {
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/commission/proof",
-      data,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "multi-part/form-data" },
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/commission/proof`, data, {
+      withCredentials: true,
+      headers: { "Content-Type": "multi-part/form-data" },
+    });
     dispatch(commissionSlice.actions.postCommissionProofSuccess(response.data));
     toast.success(response.data.message);
   } catch (err) {

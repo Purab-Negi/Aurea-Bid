@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const auctionSlice = createSlice({
   name: "auction",
   initialState: {
@@ -87,10 +87,9 @@ export const auctionSlice = createSlice({
 export const getAllAuctionItems = () => async (dispatch) => {
   dispatch(auctionSlice.actions.getAllAuctionItemRequest());
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/v1/auction/all-items",
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${BASE_URL}/auction/all-items`, {
+      withCredentials: true,
+    });
 
     dispatch(
       auctionSlice.actions.getAllAuctionItemSuccess(response.data.items)
@@ -107,10 +106,9 @@ export const getAllAuctionItems = () => async (dispatch) => {
 export const getAuctionDetails = (id) => async (dispatch) => {
   dispatch(auctionSlice.actions.getAuctionDetailRequest());
   try {
-    const response = await axios.get(
-      `http://localhost:5000/api/v1/auction/${id}`,
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${BASE_URL}/auction/${id}`, {
+      withCredentials: true,
+    });
     dispatch(
       auctionSlice.actions.getAuctionDetailSuccess({
         item: response.data.item,
@@ -131,14 +129,10 @@ export const getAuctionDetails = (id) => async (dispatch) => {
 export const createAuction = (data) => async (dispatch) => {
   dispatch(auctionSlice.actions.createAuctionRequest());
   try {
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/auction/add-item",
-      data,
-      {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+    const response = await axios.post(`${BASE_URL}/auction/add-item`, data, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     dispatch(auctionSlice.actions.createAuctionSuccess());
     toast.success(response.data.message);
     dispatch(getAllAuctionItems());
@@ -153,10 +147,9 @@ export const createAuction = (data) => async (dispatch) => {
 export const getMyAuction = () => async (dispatch) => {
   dispatch(auctionSlice.actions.getMyAuctionRequest());
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/v1/auction/myitems",
-      { withCredentials: true }
-    );
+    const response = await axios.get(`${BASE_URL}/auction/myitems`, {
+      withCredentials: true,
+    });
     dispatch(auctionSlice.actions.getMyAuctionSuccess(response.data.items));
   } catch (err) {
     dispatch(auctionSlice.actions.getMyAuctionFailed());
@@ -169,12 +162,9 @@ export const getMyAuction = () => async (dispatch) => {
 export const deleteAuction = (id) => async (dispatch) => {
   dispatch(auctionSlice.actions.deleteAuctionItemRequest());
   try {
-    const response = await axios.delete(
-      `http://localhost:5000/api/v1/auction/delete/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.delete(`${BASE_URL}/auction/delete/${id}`, {
+      withCredentials: true,
+    });
     dispatch(auctionSlice.actions.deleteAuctionItemSuccess(response.data));
     toast.success(response.data.message);
     dispatch(getMyAuction());
@@ -190,7 +180,7 @@ export const republishAuction = (id, data) => async (dispatch) => {
   dispatch(auctionSlice.actions.republishItemRequest());
   try {
     const response = await axios.put(
-      `http://localhost:5000/api/v1/auction/item/republish/${id}`,
+      `${BASE_URL}/auction/item/republish/${id}`,
       data,
       {
         withCredentials: true,

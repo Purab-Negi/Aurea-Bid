@@ -19,15 +19,12 @@ const Contact = () => {
           method="POST"
           className="flex flex-col gap-5"
         >
-          {/* Name */}
           <input
             type="text"
             name="name"
             placeholder="Your Full Name"
             className="bg-black/40 border border-yellow-500/20 text-white p-3 rounded-xl outline-none focus:border-yellow-500 transition"
           />
-
-          {/* Email */}
           <input
             type="email"
             name="email"
@@ -35,15 +32,12 @@ const Contact = () => {
             className="bg-black/40 border border-yellow-500/20 text-white p-3 rounded-xl outline-none focus:border-yellow-500 transition"
           />
 
-          {/* Message */}
           <textarea
             name="message"
             placeholder="Describe your issue or query..."
             rows="4"
             className="bg-black/40 border border-yellow-500/20 text-white p-3 rounded-xl outline-none focus:border-yellow-500 transition"
           ></textarea>
-
-          {/* Hidden Honeypot */}
           <input type="hidden" name="_gotcha" />
 
           <button
