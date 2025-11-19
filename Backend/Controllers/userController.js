@@ -3,7 +3,7 @@ import { User } from "../Models/userSchema.js";
 import { v2 as cloudinary } from "cloudinary";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import { generateToken } from "../Utils/jwtToken.js";
-
+import { sendEmail } from "../Utils/sendEmail.js";
 export const register = catchAsyncErrors(async (req, res, next) => {
   if (!req.files || Object.keys(req.files).length == 0) {
     return next(new ErrorHandler("Profile Image Required", 400));
@@ -135,4 +135,58 @@ export const fetchLeaderboard = catchAsyncErrors(async (req, res) => {
     success: true,
     users,
   });
+});
+
+export const forgotPassword = catchAsyncErrors(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+  const otp = Math.floor(1000 + Math.random() * 9000).toString();
+  user.resetOtp = otp;
+  user.resetOtpExpire = Date.now() + 10 * 60 * 1000;
+  await user.save({ validateBeforeSave: false });
+
+  await sendEmail({
+    email: user.email,
+    subject: "AureaBid: Password Reset Otp",
+    message: `Your OTP for password reset is: ${otp}`,
+  });
+  res.status(200).json({ message: "OTP sent successfully" });
+});
+
+export const verifyOtp = catchAsyncErrors(async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({
+    email,
+    resetOtp: otp,
+    resetOtpExpire: { $gt: Date.now() },
+  });
+  if (!user) {
+    res.status(400).json({ message: "Invalid or expired OTP" });
+  }
+  user.otpVerified = true;
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({ message: "OTP verified" });
+});
+
+export const resetPassword = catchAsyncErrors(async (req, res) => {
+  const { email, newPassword } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+  if (!user.resetOtp || user.resetOtpExpire < Date.now()) {
+    return res.status(400).json({ message: "OTP expired or not verified" });
+  }
+  if (!user.otpVerified) {
+    return res.status(400).json({ message: "OTP not verified" });
+  }
+  user.password = newPassword;
+  user.resetOtp = undefined;
+  user.resetOtpExpire = undefined;
+  await user.save();
+  res.status(200).json({ message: "Password updated successfully" });
 });
