@@ -6,7 +6,7 @@ import { FaGreaterThan } from "react-icons/fa";
 import { RiAuctionFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import AuctionStatusBlock from "@/components/AuctionStatusBlock";
+import AuctionStatusBlock from "@/Components/AuctionStatusBlock";
 import { getAuctionStatus } from "@/constants/constant";
 
 const AuctionItem = () => {
